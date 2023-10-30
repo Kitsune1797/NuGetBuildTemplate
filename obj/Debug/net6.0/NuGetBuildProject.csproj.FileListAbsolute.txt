@@ -1,0 +1,11 @@
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\bin\Debug\net6.0\NuGetBuildProject.deps.json
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\bin\Debug\net6.0\NuGetBuildProject.dll
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\bin\Debug\net6.0\NuGetBuildProject.pdb
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\obj\Debug\net6.0\NuGetBuildProject.GeneratedMSBuildEditorConfig.editorconfig
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\obj\Debug\net6.0\NuGetBuildProject.AssemblyInfoInputs.cache
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\obj\Debug\net6.0\NuGetBuildProject.AssemblyInfo.cs
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\obj\Debug\net6.0\NuGetBuildProject.csproj.CoreCompileInputs.cache
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\obj\Debug\net6.0\NuGetBuildProject.dll
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\obj\Debug\net6.0\refint\NuGetBuildProject.dll
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\obj\Debug\net6.0\NuGetBuildProject.pdb
+D:\2023-PBE-intern\MyCodes\NuGetBuildProject\obj\Debug\net6.0\ref\NuGetBuildProject.dll
