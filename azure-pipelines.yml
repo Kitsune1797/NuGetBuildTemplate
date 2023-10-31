@@ -1,0 +1,53 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool: Default
+
+
+stages:
+
+
+- stage: Build_Stage
+  displayName:
+  jobs:
+  - job: BuildNuget
+    displayName: Build Nuget packages
+    variables: 
+      BuildConfiguration: release
+      NUGET_ENABLE_LEGACY_CSPROJ_PACK: true
+    steps: 
+
+    - task: NuGetToolInstaller@1
+      inputs:
+        versionSpec: 
+        
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '**/*.sln'
+        feedsToUse: 'select'
+        vstsFeed: 'f4f8e08d-eb7e-4213-bb02-089881df31d6/fc59492f-6df1-4b7b-bb9f-70dcdca3a856'
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: NuGetCommand@2
+      inputs:
+        command: 'pack'
+        packagesToPack: '**/*.csproj'
+        versioningScheme: 'off'
+
+    - task: NuGetCommand@2
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: 'f4f8e08d-eb7e-4213-bb02-089881df31d6/fc59492f-6df1-4b7b-bb9f-70dcdca3a856'
