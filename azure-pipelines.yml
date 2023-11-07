@@ -51,6 +51,6 @@ stages:
         authType: 'UserAndPass'
         username: 'admin'
         password: 'Password1'
-        url: 'http://localhost:8081/service/rest/v1/components?repository=nuget-hosted'
+        url: 'http://localhost:8081/service/rest/v1/components?repository=Max_PBB'
         
     
