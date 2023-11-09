@@ -8,10 +8,7 @@ trigger:
 
 pool: Default
 
-
 stages:
-
-
 - stage: Build_Stage
   displayName:
   jobs:
@@ -44,13 +41,11 @@ stages:
         command: 'pack'
         packagesToPack: '**/*.csproj'
         versioningScheme: 'off'
-        
-    - task: cURLUploader@2
+
+          
+
+    - task: CmdLine@2
       inputs:
-        files: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-        authType: 'UserAndPass'
-        username: 'admin'
-        password: 'Password1'
-        url: 'http://localhost:8081/service/rest/v1/components?repository=Max_PBB'
-        
-    
+        script: |
+            mvn install
+            mvn deploy:deploy-file -Durl=http://localhost:8081/service/rest/v1/components?repository=Max_PBB \ -DrepositoryId=nugetBuildTesting \ -Dfile=$(Build.ArtifactStagingDirectory)/*.nupkg
