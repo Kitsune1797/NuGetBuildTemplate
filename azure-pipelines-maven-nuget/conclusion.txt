@@ -1,0 +1,2 @@
+Maven requires us to put pom.xml for every file. Maven is used ONLY when dealing with Java projects. This project runs with .NET and desired to produce NuGet package, 
+hence it is concluded that the only suitable method for .NET class library project to produce NuGet package is cURL 
