@@ -6,28 +6,57 @@
 trigger:
 - main
 
-pool: default
+pool: Default
 
+stages:
+- stage: Build_Stage
+  displayName:
+  jobs:
+  - job: BuildNuget
+    displayName: Build Nuget packages
+    variables: 
+      BuildConfiguration: release
+      NUGET_ENABLE_LEGACY_CSPROJ_PACK: true
+    steps: 
 
-steps:
+    - task: NuGetToolInstaller@1
+      inputs:
+        versionSpec: 
+        
+    - task: NuGetCommand@2
+      displayName: do restore solution
+      inputs:
+        command: 'restore'
+        restoreSolution: '**/*.sln'
+        feedsToUse: 'select'
+        vstsFeed: 'f4f8e08d-eb7e-4213-bb02-089881df31d6/fc59492f-6df1-4b7b-bb9f-70dcdca3a856'
 
-- task: CmdLine@2
-  inputs:
-    script: |
-      mvn install
+    - task: DotNetCoreCLI@2
+      displayName: do build csproj
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-- task: PowerShell@2
-  displayName: do POST
-  inputs:
-    targetType: 'inline'
-    script: |
-      Remove-item alias:curl
-      curl -X 'POST' 'http://localhost:8081/service/rest/v1/components?repository=Max_PBB_Maven' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -H 'NX-ANTI-CSRF-TOKEN: 0.8419471555485039' -H 'X-Nexus-UI: true' -u 'admin:Password1' -F maven2.groupId=holdSql-nexus -F maven2.artifactId=holdSql-nexus -F maven2.version=1.0.0 -F 'maven2.generate-pom=true' -F 'maven2.asset1=C:\Users\kwoks\.m2\repository\holdSql-nexus\holdSql-nexus\1.0.0\holdSql-nexus-1.0.0.jar;type=application/java-archive' -F 'maven2.asset1.extension=jar' 
-      
-- task: PowerShell@2
-  displayName: do GET
-  inputs:
-    targetType: 'inline'
-    script: |
-      Remove-item alias:curl
-      curl -X 'GET' 'http://localhost:8081/service/rest/v1/components?repository=Max_PBB_Maven' -H 'accept: application/json' -H 'NX-ANTI-CSRF-TOKEN: 0.8419471555485039' -H 'X-Nexus-UI: true' -u 'admin:Password1'
+    - task: NuGetCommand@2
+      displayName: do pack csproj
+      inputs:
+        command: 'pack'
+        packagesToPack: '**/*.csproj'
+        versioningScheme: 'off'
+          
+    - task: PowerShell@2
+      displayName: do POST
+      inputs:
+        targetType: 'inline'
+        script: |
+          Remove-item alias:curl
+          curl -X POST 'http://localhost:8081/service/rest/v1/components?repository=Max_PBB' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -H 'NX-ANTI-CSRF-TOKEN: 0.2680400104118965' -H 'X-Nexus-UI: true' -u 'admin:Password1' -F 'nuget.asset=@C:\Users\kwoks\agent\_work\6\a\NuGetBuildProject.1.0.0.nupkg'
+        
+    - task: PowerShell@2
+      displayName: do GET
+      inputs:
+        targetType: 'inline'
+        script: |
+          Remove-item alias:curl
+          curl -X GET 'http://localhost:8081/service/rest/v1/components?repository=Max_PBB' -H 'accept: application/json' -H 'NX-ANTI-CSRF-TOKEN: 0.2680400104118965' -H 'X-Nexus-UI: true' -u 'admin:Password1'
